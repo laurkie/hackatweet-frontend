@@ -1,0 +1,148 @@
+.mainContainer{
+    height: 100vh;
+    width: 100vw;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    background-color: rgb(18, 27, 37);
+    /* border:2px solid red; */
+}
+
+/******************** Left-side ******************/
+
+.leftContainer{
+    padding: 3vh;
+    grid-column: 1/2;
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right:1px solid rgb(74, 74, 74);
+}
+
+.imgBirdContainer{
+    width:30%;
+    padding:2%;
+}
+
+.imgBirdContainer img{
+    transform:rotate(180deg);
+}
+
+.userInfoAndLogout{
+    display:flex;
+    flex-direction: column;
+    gap:20px;
+    /* border:2px solid rgb(35, 1, 185); */
+}
+
+.userInfo{
+    display:flex;
+    gap: 10px;
+    /* border:2px solid red; */
+}
+
+.userImg{
+    width:12%;
+    /* border:2px solid rgb(55, 255, 0); */
+}
+
+.userImg img{
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    background-color: rgb(0, 133, 241);
+}
+
+.userNames{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.userUsername{
+    color: rgb(120, 120, 136);
+}
+
+.userLogout button{
+    background-color: transparent;
+}
+
+.centerContainer{
+    grid-column: 2/4;
+    /* border:2px solid red; */
+}
+
+.header{
+    padding: 3vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    border-bottom:1px solid rgb(74, 74, 74);
+}
+
+.header h2{
+    align-self: flex-start;
+}
+
+.newTweetContainer{
+    width:80%;
+    display:flex;
+    flex-direction: column;
+    gap:20px;
+}
+
+.newTweetInput input{
+    width: 100%;
+    background-color: transparent;
+    /* color:white; */
+}
+
+.compteurAndButton{
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+}
+
+.compteurAndButton button{
+    background-color: rgb(0, 133, 241);
+}
+
+.tweetsContainer{
+    display:flex;
+    flex-direction: column;
+}
+
+.rightContainer{
+    padding: 3vh;
+    grid-column: 4/5;
+    border-left: 1px solid rgb(74, 74, 74);
+    /* border:2px solid red; */
+}
+
+.rightContainer h2{
+    margin-bottom: 3vh;
+}
+
+.trendsContainer{
+    background-color: rgb(28, 37, 48);
+    border-radius: 10px;
+}
+
+.hashtagContainer{
+    padding: 3vh;
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+}
+
+.hashtag{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.tweetNb{
+    color: rgb(120, 120, 136);
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
