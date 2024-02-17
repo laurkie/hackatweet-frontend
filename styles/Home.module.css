@@ -67,7 +67,10 @@
 
 .centerContainer{
     grid-column: 2/4;
-    /* border:2px solid red; */
+    height: 100vh;
+    display:flex;
+    flex-direction: column;
+    /* border: 2px solid rgb(33, 88, 170); */
 }
 
 .header{
@@ -109,6 +112,9 @@
 .tweetsContainer{
     display:flex;
     flex-direction: column;
+    flex: 1;
+    overflow-y: auto;
+    /* border:2px solid red; */
 }
 
 .rightContainer{

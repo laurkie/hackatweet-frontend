@@ -1,12 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { login, logout } from '../reducers/user';
+import { login } from '../reducers/user';
 import { Modal } from 'antd';
-import Link from 'next/link';
-import Moment from 'react-moment';
 import styles from '../styles/Signin.module.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faXmark, faEye } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/router';
 
 function Signin() {
@@ -31,12 +27,12 @@ function Signin() {
 		}).then(response => response.json())
 			.then(data => {
 				if (data.result) {
-					dispatch(login({ username: data.data.username, token: data.data.token }));
+                    const { token, firstname, username, userImg } = data.user;
+					dispatch(login({ token, firstname, username, userImg }));
 					setSignUpUsername('');
 					setSignUpPassword('');
                     router.push('/maison');
-				}
-                else{
+				}else{
                     console.log(data.error);
                 }
 			});
@@ -50,7 +46,8 @@ function Signin() {
 		}).then(response => response.json())
 			.then(data => {
 				if (data.result) {
-					dispatch(login({ username: data.data.username, token: data.data.token }));
+                    const { token, firstname, username, userImg } = data.user;
+					dispatch(login({ token, firstname, username, userImg }));
 					setSignInUsername('');
 					setSignInPassword('');
                     router.push('/maison');

@@ -14,7 +14,7 @@ function Tweet(props){
                         <p>{props.firstname}</p>
                     </div>
                     <div className={styles.userUsername}>
-                        <p>@{props.username} ~ {props.time} Hours</p>
+                        <p>@{props.username} ~ {props.hourDelta} H {props.minutesDelta} Min</p>
                     </div>
                 </div>
             </div>

@@ -2,13 +2,12 @@ import styles from '../styles/Home.module.css';
 import Tweet from './Tweet';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import getHourDelta from '../modules/getHourDelta';
+import getTimeDelta from '../modules/getTimeDelta';
 
 function Home() {
 
     const user = useSelector(state => state.user.value);
     const [newTweetContent, setNewTweetContent] = useState('');
-    const [refreshTrigger, setRefreshTrigger] = useState(true);
     const [tweets, setTweets] = useState([]);
 
     useEffect(() => {
@@ -16,12 +15,14 @@ function Home() {
             .then(response => response.json())
             .then(data => {
                 const formattedData = data.map(tweet => {
-                    tweet.time = getHourDelta(tweet.time, new Date());
+                    const { hours, minutes } = getTimeDelta(new Date(tweet.time), new Date());
+                    tweet.hourDelta = hours;
+                    tweet.minutesDelta = minutes;
                     return tweet;
                 })
                 setTweets(formattedData);
             })
-    }, [refreshTrigger]);
+    }, [newTweetContent]);
 
     function handleNewTweet(){
         fetch('http://localhost:3000/tweets/newtweet', {
@@ -36,7 +37,7 @@ function Home() {
         }).then(response => response.json())
             .then(data => {
                 if(data){
-                    setRefreshTrigger(!refreshTrigger);
+                    setNewTweetContent('');
                 }
             });
     }
@@ -54,11 +55,11 @@ function Home() {
                 <div className={styles.userInfoAndLogout}>
                     <div className={styles.userInfo}>
                         <div className={styles.userImg}>
-                            <img src="egg.png" alt="userImg"/>
+                            <img src={user.userImg} alt="userImg"/>
                         </div>
                         <div className={styles.userNames}>
-                            <p className={styles.userFirstname}>Andoni</p>
-                            <p className={styles.userUsername}>@lapoule</p>
+                            <p className={styles.userFirstname}>{user.firstname}</p>
+                            <p className={styles.userUsername}>@{user.username}</p>
                         </div>
                     </div>
                     <div className={styles.userLogout}>
@@ -75,6 +76,7 @@ function Home() {
                             onChange={(e) => setNewTweetContent(e.target.value)}
                             type="text"
                             placeholder="What's up?"
+                            value={newTweetContent}
                             />
                         </div>
                         <div className={styles.compteurAndButton}>
@@ -105,34 +107,3 @@ function Home() {
 }
 
 export default Home;
-
-
-   // const tweets = [
-    //     {
-    //         userImg: 'egg.png',
-    //         firstname: 'Andoni',
-    //         username: 'lapoule',
-    //         time: 5,
-    //         content: 'Vive le JS vanilla #LaureF',
-    //         isLiked: false,
-    //         likeNb: 12
-    //     },
-    //     {
-    //         userImg: 'egg.png',
-    //         firstname: 'Jean',
-    //         username: 'Jean-Mich',
-    //         time: 6,
-    //         content: `Pourquoi les canards sont toujours à l'heure ? Parce qu’ils sont dans l’étang.`,
-    //         isLiked: false,
-    //         likeNb: 0
-    //     },
-    //     {
-    //         userImg: 'egg.png',
-    //         firstname: 'Laure',
-    //         username: 'Laure-réal',
-    //         time: 7,
-    //         content: 'Parce que je le vaux bien',
-    //         isLiked: false,
-    //         likeNb: 18
-    //     },
-    // ]
