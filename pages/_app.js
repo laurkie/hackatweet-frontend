@@ -16,7 +16,6 @@ function App({ Component, pageProps }) {
       <Head>
         <title>Time tracker</title>
       </Head>
-      <Signin />
       <Component {...pageProps} />
     </Provider>
   );

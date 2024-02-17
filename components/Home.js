@@ -1,41 +1,48 @@
 import styles from '../styles/Home.module.css';
 import Tweet from './Tweet';
-import Image from 'next/image';
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import getHourDelta from '../modules/getHourDelta';
 
 function Home() {
 
-    const tweets = [
-        {
-            userImg: 'egg.png',
-            firstname: 'Andoni',
-            username: 'lapoule',
-            time: 5,
-            content: 'Vive le JS vanilla #LaureF',
-            isLiked: false,
-            likeNb: 12
-        },
-        {
-            userImg: 'egg.png',
-            firstname: 'Jean',
-            username: 'Jean-Mich',
-            time: 6,
-            content: `Pourquoi les canards sont toujours à l'heure ? Parce qu’ils sont dans l’étang.`,
-            isLiked: false,
-            likeNb: 0
-        },
-        {
-            userImg: 'egg.png',
-            firstname: 'Laure',
-            username: 'Laure-réal',
-            time: 7,
-            content: 'Parce que je le vaux bien',
-            isLiked: false,
-            likeNb: 18
-        },
-    ]
+    const user = useSelector(state => state.user.value);
+    const [newTweetContent, setNewTweetContent] = useState('');
+    const [refreshTrigger, setRefreshTrigger] = useState(true);
+    const [tweets, setTweets] = useState([]);
+
+    useEffect(() => {
+        fetch('http://localhost:3000/tweets')
+            .then(response => response.json())
+            .then(data => {
+                const formattedData = data.map(tweet => {
+                    tweet.time = getHourDelta(tweet.time, new Date());
+                    return tweet;
+                })
+                setTweets(formattedData);
+            })
+    }, [refreshTrigger]);
+
+    function handleNewTweet(){
+        fetch('http://localhost:3000/tweets/newtweet', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                token: user.token,
+                content: newTweetContent,
+                time: new Date(),
+                hashtags: 'ok'
+            })
+        }).then(response => response.json())
+            .then(data => {
+                if(data){
+                    setRefreshTrigger(!refreshTrigger);
+                }
+            });
+    }
 
     const tweetComponents = tweets.map((tweet, i) => {
-        return <Tweet key={i} userImg={tweet.userImg} firstname={tweet.firstname} username={tweet.username} time={tweet.time} content={tweet.content} likeNb={tweet.likeNb}/>
+        return <Tweet key={i} {...tweet} />
     });
 
     return (
@@ -65,13 +72,14 @@ function Home() {
                     <div className={styles.newTweetContainer}>
                         <div className={styles.newTweetInput}>
                             <input
+                            onChange={(e) => setNewTweetContent(e.target.value)}
                             type="text"
                             placeholder="What's up?"
                             />
                         </div>
                         <div className={styles.compteurAndButton}>
                             <p>8/280</p>
-                            <button>Tweet</button>
+                            <button onClick={() => handleNewTweet()}>Tweet</button>
                         </div>
                     </div>
                 </div>
@@ -97,3 +105,34 @@ function Home() {
 }
 
 export default Home;
+
+
+   // const tweets = [
+    //     {
+    //         userImg: 'egg.png',
+    //         firstname: 'Andoni',
+    //         username: 'lapoule',
+    //         time: 5,
+    //         content: 'Vive le JS vanilla #LaureF',
+    //         isLiked: false,
+    //         likeNb: 12
+    //     },
+    //     {
+    //         userImg: 'egg.png',
+    //         firstname: 'Jean',
+    //         username: 'Jean-Mich',
+    //         time: 6,
+    //         content: `Pourquoi les canards sont toujours à l'heure ? Parce qu’ils sont dans l’étang.`,
+    //         isLiked: false,
+    //         likeNb: 0
+    //     },
+    //     {
+    //         userImg: 'egg.png',
+    //         firstname: 'Laure',
+    //         username: 'Laure-réal',
+    //         time: 7,
+    //         content: 'Parce que je le vaux bien',
+    //         isLiked: false,
+    //         likeNb: 18
+    //     },
+    // ]
